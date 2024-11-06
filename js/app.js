@@ -6,6 +6,10 @@ const tbody = document.querySelector("tbody");
 //malumotni local storagega saqlaymiz!!!!
 let users = JSON.parse(localStorage.getItem("users")) ?? [];
 
+//vazifa counter ni qoshish
+const counter = document.querySelector(".counter");
+counter.textContent = users.length;
+
 //MAKE USERS yasab olamiz
 const makeUsers = () => {
   tbody.innerHTML = "";
@@ -27,6 +31,7 @@ const makeUsers = () => {
 
     tbody.appendChild(clone);
   });
+  counter.textContent = users.length;
 };
 
 //malumotni oxchirish deleteni bosganda
@@ -42,9 +47,15 @@ const deletebtn = (e) => {
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
-  const firstName = form.firstName.value;
-  const bio = form.bio.value;
-  const age = Number(form.age.value);
+  const firstName = form.firstName.value.trim();
+  const bio = form.bio.value.trim();
+  const age = Number(form.age.value.trim());
+
+  if (!Boolean(firstName) || !Boolean(bio) || !Boolean(age)) {
+    alert("Please, Fill all fields ");
+    return;
+  }
+
   users.push({ id: Math.random(), firstName, age, bio });
   makeUsers();
   form.reset();
